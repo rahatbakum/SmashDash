@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TestMassApplier : MonoBehaviour
@@ -10,7 +8,6 @@ public class TestMassApplier : MonoBehaviour
         _massApplier = GetComponent<MassApplier>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(Input.GetMouseButton(0))

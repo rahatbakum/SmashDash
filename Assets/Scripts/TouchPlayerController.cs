@@ -9,8 +9,18 @@ public class TouchPlayerController : MonoBehaviour
     private void Start()
     {
         _player = GetComponent<Player>();
-        _touchHandler.OnTouchDown.AddListener(OnTouchDown);
-        _touchHandler.OnTouchUp.AddListener(OnTouchUp);
+    }
+
+    private void OnEnable()
+    {
+        _touchHandler.TouchDown += OnTouchDown;
+        _touchHandler.TouchUp += OnTouchUp;
+    }
+
+    private void OnDisable()
+    {
+        _touchHandler.TouchDown -= OnTouchDown;
+        _touchHandler.TouchUp -= OnTouchUp;
     }
 
     private void OnTouchDown()
