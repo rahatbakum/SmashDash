@@ -48,7 +48,7 @@ public class Bullet : MonoBehaviour
         Collider[] colliders = Physics.OverlapCapsule(_previousPosition, transform.position, _sphereCollider.radius);
         foreach(var item in colliders)
         {
-            if(item.tag == Obstacle.DefaultTag && Obstacle.GetObstacle(item) != null)
+            if(item.TryGetComponent<Obstacle>(out Obstacle obstacle))
                 return true;
         }
         return false;
@@ -84,10 +84,9 @@ public class Bullet : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position, _sphereCollider.radius);
         foreach(var item in colliders)
         {
-            if(item.tag == Obstacle.DefaultTag)
+            if(item.TryGetComponent<Obstacle>(out Obstacle obstacle))
             {
-                Obstacle obstacle = Obstacle.GetObstacle(item);
-                obstacle?.Explode();
+                obstacle.Explode();
             }
         }
         Destroy(gameObject);

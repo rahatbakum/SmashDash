@@ -43,10 +43,7 @@ public class BulletShooter : MonoBehaviour
         while(Time.time < startTime + _loadingTime)
         {
             if(!RightGameState())
-            {
-                Shoot();
                 yield break;
-            }
             float bulletMass = Mathf.Lerp(_startBulletMass, startPlayerMass, (Time.time - startTime) / _loadingTime);
             _player.Mass = startPlayerMass - bulletMass;
             _bullet.Mass = bulletMass;
@@ -65,6 +62,7 @@ public class BulletShooter : MonoBehaviour
 
     public void Shoot()
     {
+        if(!RightGameState())
         if(_state != BulletShooterState.Loading)
             return;
         _state = BulletShooterState.NotLoading;

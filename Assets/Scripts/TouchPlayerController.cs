@@ -1,14 +1,14 @@
 using UnityEngine;
 
-[RequireComponent (typeof(TouchHandler))]
+[RequireComponent (typeof(Player))]
 public class TouchPlayerController : MonoBehaviour
 {
-    [SerializeField] private Player _player;
-    private TouchHandler _touchHandler;
+    [SerializeField]  private TouchHandler _touchHandler;
+    private Player _player;
 
     private void Start()
     {
-        _touchHandler = GetComponent<TouchHandler>();
+        _player = GetComponent<Player>();
         _touchHandler.OnTouchDown.AddListener(OnTouchDown);
         _touchHandler.OnTouchUp.AddListener(OnTouchUp);
     }

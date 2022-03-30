@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
         _massApplier = GetComponentInChildren<MassApplier>();
         _bulletShooter = GetComponentInChildren<BulletShooter>();
         _bulletShooter.Initialize(this, _door, _gameManager);
-        _mass = _startMass;
+        Mass = _startMass;
     }
 
     public void StartLoad()
