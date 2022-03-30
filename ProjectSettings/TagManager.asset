@@ -9,6 +9,8 @@ TagManager:
   - Road
   - Door
   - Enviroment
+  - GameManager
+  - Effect
   layers:
   - Default
   - TransparentFX

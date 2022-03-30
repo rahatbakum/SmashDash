@@ -2,7 +2,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     public GameState MainGameState {get; private set;} = GameState.Playing;
+    [SerializeField] private Transform _prefabSlot;
+    public Transform PrefabSlot
+    {
+        get => _prefabSlot;
+    }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public void Win()
     {
