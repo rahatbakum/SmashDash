@@ -15,7 +15,7 @@ public class TestMassApplier : MonoBehaviour
     {
         if(Input.GetMouseButton(0))
         {
-            float mass = 2f * Mathf.Clamp((float) Input.mousePosition.x / Screen.width, 0f, 1f);
+            float mass = 100f * Mathf.Clamp((float) Input.mousePosition.x / Screen.width, 0f, 1f);
             Debug.Log($"ApplyMass({mass})");
             _massApplier.ApplyMass(mass);
         }

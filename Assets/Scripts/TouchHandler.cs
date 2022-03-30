@@ -16,7 +16,7 @@ public class TouchHandler : MonoBehaviour
 
     private void Update()
     {
-        if(Input.touchCount > 0)
+        if(Input.touchCount > 0 || Input.GetMouseButton(0)) // Input.GetMouseButton(0) added for debug
         {
             if(!_previousFrameIsTouched)
                 OnTouchDown.Invoke();
@@ -29,5 +29,6 @@ public class TouchHandler : MonoBehaviour
                 OnTouchUp.Invoke();
             _previousFrameIsTouched = false;
         }
+
     }
 }
