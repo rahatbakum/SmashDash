@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _finishPosition;
     private Vector3 nearestObstaclePos = Vector3.zero;
 
+    
     private void SetJumpsAmountAndPositions(Vector3 startPosition, Vector3 finishPosition, float maxJumpDistance)
     {
         Vector3 fixedFinishPosition = new Vector3(finishPosition.x, startPosition.y, finishPosition.z);
@@ -43,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         return WayCollisionDetector.GetFirstCollision(_playerView.position, _door.position, MassApplier.MassToRadius(_player.Mass) * RadiusDetectCoef, condition);
     }
 
+    //Use this from other objects, Player's BulletShooter's events, for example
     public void StartMovingToDoor()
     {
         
