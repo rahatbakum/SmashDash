@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1068619917319760077}
   - component: {fileID: 1068619917319760076}
   - component: {fileID: 4829272289748888174}
+  - component: {fileID: 1241811921071786805}
   m_Layer: 0
   m_Name: View
   m_TagString: Bullet
@@ -108,6 +109,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99270dcce109ca40be22fd2af48a433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1241811921071786805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068619917319760079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38481829505a6e44beae57daf9573ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _effectPrefab: {fileID: 4592935169598722045, guid: 0de351ad021ac1846b72fc9380a8c1f9, type: 3}
 --- !u!1 &1068619917985581723
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,3 +166,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ec086526e7a29347aa0cf6b1b4d3a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: 7
+  _exploding:
+    m_PersistentCalls:
+      m_Calls: []
+  _exploded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1241811921071786805}
+        m_TargetAssemblyTypeName: ParticleSystemStarter, Assembly-CSharp
+        m_MethodName: StartEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _massChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4829272289748888174}
+        m_TargetAssemblyTypeName: MassApplier, Assembly-CSharp
+        m_MethodName: ApplyMass
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

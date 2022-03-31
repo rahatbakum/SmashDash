@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BulletShooter : MonoBehaviour
 {
@@ -8,7 +9,13 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private float _loadingTime = 3f;
     [SerializeField] private float _startBulletMass = 10f;
-    private GameManager _gameManager;
+    [SerializeField] private UnityEvent _bulletExploded;
+    public event UnityAction BulletExploded    
+    {
+        add => _bulletExploded.AddListener(value);
+        remove => _bulletExploded.RemoveListener(value);
+    }
+
     private Player _player;
     private Door _door;
     private BulletShooterState _state = BulletShooterState.NotLoading;
@@ -18,17 +25,28 @@ public class BulletShooter : MonoBehaviour
 
     private bool RightGameState()
     {
-        return _gameManager.MainGameState == GameState.Playing;
+        return GameManager.Instance.MainGameState == GameState.Playing;
     }
 
-    public void Initialize(Player player, Door door, GameManager gameManager)
+    //call this from another object after instantiation
+    public void Initialize(Player player, Door door)
     {
         if(isInitialized)
             return;
-        _gameManager = gameManager;
         _player = player;
         _door = door;
         isInitialized = true;
+    }
+
+    private void OnBulletExploded()
+    {
+        _bulletExploded.Invoke();
+    }
+
+    private void OnDisable()
+    {
+        if(_bullet != null)
+            _bullet.Exploded -= OnBulletExploded;
     }
 
     private IEnumerator Load()
@@ -36,7 +54,8 @@ public class BulletShooter : MonoBehaviour
         if(!RightGameState())
             yield break;
         _bullet = (Instantiate(_bulletPrefab, transform) as GameObject).GetComponent<Bullet>();
-        _bullet.Initialize(_door.transform.position, _startBulletMass);
+        _bullet.Initialize(_door.transform.position, _player.CurrentRadius);
+        _bullet.Exploded += OnBulletExploded;
         float startTime = Time.time;
         float startPlayerMass = _player.Mass;
 
@@ -63,11 +82,12 @@ public class BulletShooter : MonoBehaviour
     public void Shoot()
     {
         if(!RightGameState())
+            return;
         if(_state != BulletShooterState.Loading)
             return;
         _state = BulletShooterState.NotLoading;
         StopCoroutine(_loadCoroutine);
-        _bullet.transform.SetParent(_player.transform.parent);
+        _bullet.transform.SetParent(GameManager.Instance.PrefabSlot);
         _bullet.Shoot();
     }
 
