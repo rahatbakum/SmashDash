@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 public class Bullet : MonoBehaviour, IExplodingObject, IMassObject
 {
-    private const float ExplodeSizeCoefficient = 3f;
+    private const float ExplodeSizeCoef = 5f;
+    private const float ExplodeSizePow = 1.5f;
     private const float MinDistance = 0.05f;
 
     
@@ -65,35 +67,23 @@ public class Bullet : MonoBehaviour, IExplodingObject, IMassObject
         _sphereCollider = GetComponentInChildren<SphereCollider>();
     }
 
-    private void MoveAfterOneFrame()
+    private void MoveAfterOneFrame(Vector3 targetPosition)
     {
         _previousPosition = transform.position;
-        transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, _speed * Time.deltaTime);
     }
 
-    //use this to check line from previous position to current
-    private bool IsTouchedObstacle()
+    private bool IsInTargetPositon(Vector3 targetPosition)
     {
-        Collider[] colliders = Physics.OverlapCapsule(_previousPosition, transform.position, CurrentRadius);
-        foreach(var item in colliders)
-        {
-            if(Obstacle.TryGetObstacle(item, out Obstacle obstacle))
-                return true;
-        }
-        return false;
+        return Vector3.Distance(transform.position, targetPosition) <= MinDistance;
     }
 
-    private bool IsInTargetPositon()
-    {
-        return Vector3.Distance(transform.position, _targetPosition) <= MinDistance;
-    }
-
-    private IEnumerator Fly()
+    private IEnumerator Fly(Vector3 targetPosition)
     {
         while(true)
         {
-            MoveAfterOneFrame();
-            if(IsTouchedObstacle() || IsInTargetPositon())
+            MoveAfterOneFrame(targetPosition);
+            if(IsInTargetPositon(targetPosition))
             {
                 Explode();
                 yield break;
@@ -104,12 +94,21 @@ public class Bullet : MonoBehaviour, IExplodingObject, IMassObject
 
     public void Shoot()
     {
-        StartCoroutine(Fly());
+        Predicate<Collider> condition = (Collider collider) => Obstacle.TryGetObstacle(collider, out Obstacle obstacle);
+        Collider nearestObstacle = WayCollisionDetector.GetFirstCollision(transform.position, _targetPosition, MassApplier.MassToRadius(_mass), condition);
+        Vector3 targetPosition;
+        if(nearestObstacle == null)
+            targetPosition = _targetPosition;
+        else
+        {
+            targetPosition = new Vector3(transform.position.x, transform.position.y, nearestObstacle.transform.position.z);
+        }
+        StartCoroutine(Fly(targetPosition));
     }
 
     private float GetExlodingRadius()
     {
-        return ExplodeSizeCoefficient * CurrentRadius;
+        return ExplodeSizeCoef * Mathf.Pow(CurrentRadius, ExplodeSizePow);
     }
 
     public void Explode()

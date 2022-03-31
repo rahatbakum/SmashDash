@@ -40,6 +40,8 @@ public class Player : MonoBehaviour, IExplodingObject, IMassObject
         remove => _positionChanged.RemoveListener(value);
     }
 
+    [HideInInspector] public PlayerState CurrentPlayerState = PlayerState.Stay;
+
     private float _mass;
     private BulletShooter _bulletShooter;
 
@@ -63,9 +65,25 @@ public class Player : MonoBehaviour, IExplodingObject, IMassObject
         }
     }
 
+    public static bool TryGetPlayer(Collider collider, out Player player)
+    {
+        if(collider.transform?.parent == null)
+        {
+            player = null;
+            return false;
+        }
+        return collider.transform.parent.TryGetComponent<Player>(out player);
+    }
+
     public float CurrentRadius
     {
         get => MassApplier.MassToRadius(_mass);
+    }
+
+    public void SetPosition(Vector3 newPosition)
+    {
+        transform.position = newPosition;
+        _positionChanged.Invoke(transform.position);
     }
 
     private void Start()
@@ -78,11 +96,15 @@ public class Player : MonoBehaviour, IExplodingObject, IMassObject
 
     public void StartLoad()
     {
+        if(CurrentPlayerState != PlayerState.Stay)
+            return;
         _bulletShooter.StartLoad();
     }
 
     public void Shoot()
     {
+        if(CurrentPlayerState != PlayerState.Stay)
+            return;
         _bulletShooter.Shoot();
     }
 
@@ -94,6 +116,12 @@ public class Player : MonoBehaviour, IExplodingObject, IMassObject
         Destroy(gameObject);
     }
 
+}
+
+public enum PlayerState
+{
+    Stay,
+    Jump
 }
 
 

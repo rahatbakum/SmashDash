@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2116236893607287610}
   - component: {fileID: 2116236893607287613}
+  - component: {fileID: 1182384430599044684}
   m_Layer: 0
   m_Name: BulletShooter
   m_TagString: Untagged
@@ -46,6 +47,33 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 1068619917985581723, guid: dcc2804708d5d12429d6397ff36c129a, type: 3}
   _loadingTime: 3
   _startBulletMass: 10
+  _bulletExploded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5193586186583863566}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: StartMovingToDoor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1182384430599044684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2116236893607287611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3025ffe80224d24987d9717c0d6a346, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2116236894672894704
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,6 +88,7 @@ GameObject:
   - component: {fileID: 2116236894672894711}
   - component: {fileID: 2116236894672894707}
   - component: {fileID: 2116236894672894710}
+  - component: {fileID: 5193586186583863566}
   m_Layer: 0
   m_Name: View
   m_TagString: Untagged
@@ -168,6 +197,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _effectPrefab: {fileID: 6623455835649397768, guid: f90a49dea6bbc0f4a809666fd94d9803, type: 3}
+--- !u!114 &5193586186583863566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2116236894672894704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31aec424ed93e184bbaa60deafbb8811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 2116236895346269613}
+  _playerView: {fileID: 2116236894672894708}
+  _door: {fileID: 0}
+  _jumpAnimation:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 5.6926107
+      outSlope: 5.6926107
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.032490976
+    - serializedVersion: 3
+      time: 0.49730697
+      value: 1.0023584
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.99823
+      value: 0
+      inSlope: -5.8443546
+      outSlope: -5.8443546
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.039475046
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _maxJumpDistance: 1
+  _oneJumpTime: 0.5
+  _jumpHeight: 1.5
 --- !u!1 &2116236895346269611
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,8 +295,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _door: {fileID: 0}
-  _startMass: 100
-  _minMass: 10
+  _startMass: 300
+  _minMass: 30
   _exploding:
     m_PersistentCalls:
       m_Calls: []
@@ -238,13 +318,25 @@ MonoBehaviour:
   _massChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2116236894672894704}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 2116236894672894707}
+        m_TargetAssemblyTypeName: MassApplier, Assembly-CSharp
+        m_MethodName: ApplyMass
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1182384430599044684}
+        m_TargetAssemblyTypeName: BulletShooterMover, Assembly-CSharp
+        m_MethodName: OnPlayerMassChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -252,7 +344,20 @@ MonoBehaviour:
         m_CallState: 2
   _positionChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Door, Assembly-CSharp
+        m_MethodName: OnPlayerMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  CurrentPlayerState: 0
 --- !u!114 &2116236895346269612
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 public class RoadController : MonoBehaviour
 {
 
-    private const float RadiusToDiameterCoeficient = 2f;
+    private const float RadiusToDiameterCoef = 2f;
 
     [SerializeField] private Player _player;
     [SerializeField] private Transform _door;
@@ -19,7 +19,7 @@ public class RoadController : MonoBehaviour
 
     private void UpdateWidthByPlayerMass(float playerMass)
     {
-        _road.UpdateWidth(MassApplier.MassToRadius(playerMass) * RadiusToDiameterCoeficient);
+        _road.UpdateWidth(MassApplier.MassToRadius(playerMass) * RadiusToDiameterCoef);
     }
 
     public void UpdateLengthByPlayerPosition(Vector3 playerPosition)

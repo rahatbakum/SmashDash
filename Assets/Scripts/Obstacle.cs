@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Obstacle : MonoBehaviour
 {
 
-    private const float ExplodingTime = 0.35f;
+    public const float ExplodingTime = 0.35f;
 
     [SerializeField] private UnityEvent _exploding;
     public event UnityAction Exploding
