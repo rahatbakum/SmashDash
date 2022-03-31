@@ -27,7 +27,10 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 fixedFinishPosition = new Vector3(finishPosition.x, startPosition.y, finishPosition.z);
         float distance = Vector3.Distance(startPosition, fixedFinishPosition);
-        _jumpsAmount = Mathf.CeilToInt(distance / maxJumpDistance);
+        if(distance < maxJumpDistance)
+            _jumpsAmount = 0;
+        else
+            _jumpsAmount = Mathf.CeilToInt(distance / maxJumpDistance);
         _startPosition = startPosition;
         _finishPosition = fixedFinishPosition;
     }
@@ -35,7 +38,10 @@ public class PlayerMovement : MonoBehaviour
     private void StartMovingDirectlyToTarget(Vector3 targetPosition)
     {
         SetJumpsAmountAndPositions(_playerView.position, targetPosition, _maxJumpDistance);
-        StartCoroutine(Jump());
+        if(_jumpsAmount > 0)
+            StartCoroutine(Jump());
+        else
+            StartCoroutine(Crawl());
     }
 
     private Collider GetNearestObstacle()
@@ -44,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
         return WayCollisionDetector.GetFirstCollision(_playerView.position, _door.position, MassApplier.MassToRadius(_player.Mass) * RadiusDetectCoef, condition);
     }
 
-    //Use this from other objects, Player's BulletShooter's events, for example
     public void StartMovingToDoor()
     {
         
@@ -96,6 +101,19 @@ public class PlayerMovement : MonoBehaviour
         }
         _player.SetPosition(new Vector3(_finishPosition.x, _player.transform.position.y, _finishPosition.z));
         _playerView.localPosition = startPlayerLocalPosition;
+        _player.CurrentPlayerState = PlayerState.Stay;
+    }
+    private IEnumerator Crawl()
+    {
+        float startTime = Time.time;
+        while(Time.time - startTime < _oneJumpTime)
+        {
+            float fullJumpProgress = (Time.time - startTime) / _oneJumpTime;
+            Vector2 xz = GetXZ(fullJumpProgress);
+            _player.SetPosition(new Vector3(xz.x, _player.transform.position.y, xz.y));
+            yield return null;
+        }
+        _player.SetPosition(new Vector3(_finishPosition.x, _player.transform.position.y, _finishPosition.z));
         _player.CurrentPlayerState = PlayerState.Stay;
     }
 
