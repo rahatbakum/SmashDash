@@ -11,11 +11,15 @@ public class Door : MonoBehaviour
             _doorMover.StartOpenDoor();
     }
 
+    private void Win()
+    {
+        _doorMover.StartCloseDoor();
+        GameManager.Instance?.Win();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(Player.TryGetPlayer(other, out Player player))
-        {
-            _doorMover.StartCloseDoor();
-        }
+            Win();
     }
 }

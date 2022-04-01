@@ -6,6 +6,9 @@ public class ParticleSystemStarter : MonoBehaviour
 
     public void StartEffect()
     {
-        Instantiate(_effectPrefab, transform.position, transform.rotation, GameManager.Instance.PrefabSlot);
+        if(GameManager.Instance != null)
+            Instantiate(_effectPrefab, transform.position, transform.rotation, GameManager.Instance.PrefabSlot);
+        else
+            Instantiate(_effectPrefab, transform.position, transform.rotation);
     }
 }
