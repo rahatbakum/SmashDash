@@ -25,6 +25,8 @@ public class BulletShooter : MonoBehaviour
 
     private bool RightGameState()
     {
+        if(GameManager.Instance == null)
+            return true;
         return GameManager.Instance.MainGameState == GameState.Playing;
     }
 
@@ -87,7 +89,10 @@ public class BulletShooter : MonoBehaviour
             return;
         _state = BulletShooterState.NotLoading;
         StopCoroutine(_loadCoroutine);
-        _bullet.transform.SetParent(GameManager.Instance.PrefabSlot);
+        if(GameManager.Instance != null)
+            _bullet.transform.SetParent(GameManager.Instance.PrefabSlot);
+        else
+            _bullet.transform.SetParent(transform.parent.parent);
         _bullet.Shoot();
     }
 

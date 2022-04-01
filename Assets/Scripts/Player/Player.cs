@@ -60,7 +60,7 @@ public class Player : MonoBehaviour, IExplodingObject, IMassObject
                 _mass = _minMass;
                 _massChanged.Invoke(_mass);
                 Explode();
-                GameManager.Instance.Lose(); 
+                GameManager.Instance?.Lose(); 
             }
         }
     }
@@ -111,7 +111,6 @@ public class Player : MonoBehaviour, IExplodingObject, IMassObject
     public void Explode()
     {
         _exploding.Invoke();
-        Debug.Log("Player Explode");
         _exploded.Invoke();
         Destroy(gameObject);
     }
