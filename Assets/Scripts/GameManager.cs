@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,19 @@ public class GameManager : MonoBehaviour
         get => _prefabSlot;
     }
 
+    [SerializeField] private UnityEvent _won;
+    public event UnityAction Won
+    {
+        add => _won.AddListener(value);
+        remove => _won.RemoveListener(value);
+    }
+    [SerializeField] private UnityEvent _lost;
+    public event UnityAction Lost
+    {
+        add => _lost.AddListener(value);
+        remove => _lost.RemoveListener(value);
+    }
+
     private void Awake()
     {
         Instance = this;
@@ -19,13 +33,13 @@ public class GameManager : MonoBehaviour
     public void Win()
     {
         MainGameState = GameState.Won;
-        Debug.Log("Win");
+        _won.Invoke();
     }
 
     public void Lose()
     {
         MainGameState = GameState.Lost;
-        Debug.Log("Lose");
+        _lost.Invoke();
     }
 
 }
