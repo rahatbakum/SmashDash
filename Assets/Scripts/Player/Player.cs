@@ -111,7 +111,6 @@ public class Player : MonoBehaviour, IExplodingObject, IMassObject
     public void Explode()
     {
         _exploding.Invoke();
-        Debug.Log("Player Explode");
         _exploded.Invoke();
         Destroy(gameObject);
     }
