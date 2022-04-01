@@ -11,6 +11,9 @@ TagManager:
   - Enviroment
   - GameManager
   - Effect
+  - UI
+  - EventSystem
+  - Container
   layers:
   - Default
   - TransparentFX
