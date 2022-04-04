@@ -9,6 +9,11 @@ public class RoadController : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private Transform _door;
     private Road _road;
+    
+    public void UpdateLengthByPlayerPosition(Vector3 playerPosition)
+    {
+        _road.UpdateLength(playerPosition, _door.transform.position);
+    }
 
     private void Awake()
     {
@@ -20,10 +25,5 @@ public class RoadController : MonoBehaviour
     private void UpdateWidthByPlayerMass(float playerMass)
     {
         _road.UpdateWidth(MassApplier.MassToRadius(playerMass) * RadiusToDiameterCoef);
-    }
-
-    public void UpdateLengthByPlayerPosition(Vector3 playerPosition)
-    {
-        _road.UpdateLength(playerPosition, _door.transform.position);
     }
 }

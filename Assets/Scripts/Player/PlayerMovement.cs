@@ -22,17 +22,33 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _finishPosition;
     private Vector3 nearestObstaclePos = Vector3.zero;
 
-    
-    private void SetJumpsAmountAndPositions(Vector3 startPosition, Vector3 finishPosition, float maxJumpDistance)
+    public void StartMovingToDoor()
     {
-        Vector3 fixedFinishPosition = new Vector3(finishPosition.x, startPosition.y, finishPosition.z);
-        float distance = Vector3.Distance(startPosition, fixedFinishPosition);
+        
+        _player.CurrentPlayerState = PlayerState.Jump;
+        StartCoroutine(MoveToDoor(Obstacle.ExplodingTime * WaitAfterObstacleExplodingCoef));
+    }
+
+    private void SetJumpsAmount(Vector3 startPosition, Vector3 finishPosition, float maxJumpDistance)
+    {
+        float distance = Vector3.Distance(startPosition, finishPosition);
         if(distance < maxJumpDistance)
             _jumpsAmount = 0;
         else
             _jumpsAmount = Mathf.CeilToInt(distance / maxJumpDistance);
+    }
+
+    private void SetPositions(Vector3 startPosition, Vector3 finishPosition)
+    {
         _startPosition = startPosition;
-        _finishPosition = fixedFinishPosition;
+        _finishPosition = finishPosition;
+    }
+    
+    private void SetJumpsAmountAndPositions(Vector3 startPosition, Vector3 finishPosition, float maxJumpDistance)
+    {
+        Vector3 fixedFinishPosition = new Vector3(finishPosition.x, startPosition.y, finishPosition.z);
+        SetJumpsAmount(startPosition, fixedFinishPosition, maxJumpDistance);
+        SetPositions(startPosition, fixedFinishPosition);
     }
 
     private void StartMovingDirectlyToTarget(Vector3 targetPosition)
@@ -48,13 +64,6 @@ public class PlayerMovement : MonoBehaviour
     {
         Predicate<Collider> condition = (Collider collider) => Obstacle.TryGetObstacle(collider, out Obstacle obstacle);
         return WayCollisionDetector.GetFirstCollision(_playerView.position, _door.position, MassApplier.MassToRadius(_player.Mass) * RadiusDetectCoef, condition);
-    }
-
-    public void StartMovingToDoor()
-    {
-        
-        _player.CurrentPlayerState = PlayerState.Jump;
-        StartCoroutine(MoveToDoor(Obstacle.ExplodingTime * WaitAfterObstacleExplodingCoef));
     }
 
     private IEnumerator MoveToDoor(float timeDelay)

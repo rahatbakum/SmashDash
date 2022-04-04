@@ -8,12 +8,20 @@ public class DoorMover : MonoBehaviour
     [SerializeField] private float _openingTime = 1.5f;
     private DoorMoverState _state = DoorMoverState.Closed;
 
-    public void StartOpenDoor()
+    public void StartOpeningDoor()
     {
         if(_state != DoorMoverState.Closed)
             return;
         _state = DoorMoverState.Moving;
         StartCoroutine(MoveDoor(transform.position, transform.position + _openingOffset, DoorMoverState.Open));
+    }
+    
+    public void StartClosingDoor()
+    {
+        if(_state != DoorMoverState.Open)
+            return;
+        _state = DoorMoverState.Moving;
+        StartCoroutine(MoveDoor(transform.position, transform.position - _openingOffset, DoorMoverState.Closed));
     }
 
     private IEnumerator MoveDoor(Vector3 startPosition, Vector3 finishPosition, DoorMoverState stateAfterMoving)
@@ -27,13 +35,6 @@ public class DoorMover : MonoBehaviour
         _state = stateAfterMoving;
     }
 
-    public void StartCloseDoor()
-    {
-        if(_state != DoorMoverState.Open)
-            return;
-        _state = DoorMoverState.Moving;
-        StartCoroutine(MoveDoor(transform.position, transform.position - _openingOffset, DoorMoverState.Closed));
-    }
     private enum DoorMoverState
     {
         Closed,

@@ -55,7 +55,7 @@ public class Bullet : MonoBehaviour, IExplodingObject, IMassObject
 
 
     //Call this from another object after instantiation
-    public void Initialize(Vector3 targetPosition, float startMass = 0f)
+    public void Initialize(Vector3 targetPosition, float startMass = 0)
     {
         _targetPosition = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
         Mass = startMass;

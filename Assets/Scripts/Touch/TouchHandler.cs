@@ -4,6 +4,9 @@ using UnityEngine.Events;
 public class TouchHandler : MonoBehaviour
 {
     private const int LeftMouseButton = 0;
+    private const int RightMouseButton = 1;
+    private const int MiddleMouseButton = 2;
+
     private const int MinTouchCount = 1;
 
     [SerializeField] private UnityEvent _touchDown = new UnityEvent();

@@ -24,12 +24,7 @@ public class GameManager : MonoBehaviour
         add => _lost.AddListener(value);
         remove => _lost.RemoveListener(value);
     }
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
+    
     public void Win()
     {
         MainGameState = GameState.Won;
@@ -42,6 +37,10 @@ public class GameManager : MonoBehaviour
         _lost.Invoke();
     }
 
+    private void Awake()
+    {
+        Instance = this;
+    }
 }
 
 public enum GameState

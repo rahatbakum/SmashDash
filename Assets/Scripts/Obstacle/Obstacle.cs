@@ -35,10 +35,10 @@ public class Obstacle : MonoBehaviour
     public void Explode()
     {
         _exploding.Invoke();
-        StartCoroutine(FullExplode(ExplodingTime));
+        StartCoroutine(CompletelyExplode(ExplodingTime));
     }
 
-    private IEnumerator FullExplode(float time)
+    private IEnumerator CompletelyExplode(float time)
     {
         yield return new WaitForSeconds(time);
         _exploded.Invoke();

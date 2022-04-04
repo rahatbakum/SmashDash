@@ -8,12 +8,12 @@ public class Door : MonoBehaviour
     public void OnPlayerMove(Vector3 position)
     {
         if(Vector3.Distance(_doorMover.transform.position, position) <= _minDistance)
-            _doorMover.StartOpenDoor();
+            _doorMover.StartOpeningDoor();
     }
 
     private void Win()
     {
-        _doorMover.StartCloseDoor();
+        _doorMover.StartClosingDoor();
         GameManager.Instance?.Win();
     }
 

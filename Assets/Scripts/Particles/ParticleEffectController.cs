@@ -7,11 +7,6 @@ public class ParticleEffectController : MonoBehaviour
     private ParticleSystem[] _particleSystems;
     private bool _isStarted = false;
 
-    private void GetAllParticleSystems()
-    {
-        _particleSystems = GetComponentsInChildren<ParticleSystem>();
-    }
-
     public void StartAllParticleSystems()
     {
         if(_isStarted)
@@ -28,6 +23,11 @@ public class ParticleEffectController : MonoBehaviour
         }
         if(_destroyAfterEffect)
             Destroy(gameObject, maxDuration);
+    }
+
+    private void GetAllParticleSystems()
+    {
+        _particleSystems = GetComponentsInChildren<ParticleSystem>();
     }
 
     private void Awake()

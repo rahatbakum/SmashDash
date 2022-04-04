@@ -23,13 +23,6 @@ public class BulletShooter : MonoBehaviour
     private Bullet _bullet;
     private IEnumerator _loadCoroutine;
 
-    private bool RightGameState()
-    {
-        if(GameManager.Instance == null)
-            return true;
-        return GameManager.Instance.MainGameState == GameState.Playing;
-    }
-
     //call this from another object after instantiation
     public void Initialize(Player player, Door door)
     {
@@ -40,6 +33,31 @@ public class BulletShooter : MonoBehaviour
         isInitialized = true;
     }
 
+    public void StartLoad()
+    {
+        if(!RightGameState())
+            return;
+        _state = BulletShooterState.Loading;
+        _loadCoroutine = Load();
+        StartCoroutine(_loadCoroutine);
+    }
+
+    public void Shoot()
+    {
+        if(!RightGameState())
+            return;
+        if(_state != BulletShooterState.Loading)
+            return;
+        _state = BulletShooterState.NotLoading;
+        StopCoroutine(_loadCoroutine);
+        if(GameManager.Instance != null)
+            _bullet.transform.SetParent(GameManager.Instance.PrefabSlot);
+        else
+            _bullet.transform.SetParent(transform.parent.parent);
+        _bullet.Shoot();
+    }
+
+    
     private void OnBulletExploded()
     {
         _bulletExploded.Invoke();
@@ -72,28 +90,11 @@ public class BulletShooter : MonoBehaviour
         }
     }
 
-    public void StartLoad()
+    private bool RightGameState()
     {
-        if(!RightGameState())
-            return;
-        _state = BulletShooterState.Loading;
-        _loadCoroutine = Load();
-        StartCoroutine(_loadCoroutine);
-    }
-
-    public void Shoot()
-    {
-        if(!RightGameState())
-            return;
-        if(_state != BulletShooterState.Loading)
-            return;
-        _state = BulletShooterState.NotLoading;
-        StopCoroutine(_loadCoroutine);
-        if(GameManager.Instance != null)
-            _bullet.transform.SetParent(GameManager.Instance.PrefabSlot);
-        else
-            _bullet.transform.SetParent(transform.parent.parent);
-        _bullet.Shoot();
+        if(GameManager.Instance == null)
+            return true;
+        return GameManager.Instance.MainGameState == GameState.Playing;
     }
 
     private enum BulletShooterState

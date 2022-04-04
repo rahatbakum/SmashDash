@@ -86,14 +86,6 @@ public class Player : MonoBehaviour, IExplodingObject, IMassObject
         _positionChanged.Invoke(transform.position);
     }
 
-    private void Start()
-    {
-        _bulletShooter = GetComponentInChildren<BulletShooter>();
-        _bulletShooter.Initialize(this, _door);
-        _positionChanged.Invoke(transform.position);
-        Mass = _startMass;
-    }
-
     public void StartLoad()
     {
         if(CurrentPlayerState != PlayerState.Stay)
@@ -113,6 +105,14 @@ public class Player : MonoBehaviour, IExplodingObject, IMassObject
         _exploding.Invoke();
         _exploded.Invoke();
         Destroy(gameObject);
+    }
+
+    private void Start()
+    {
+        _bulletShooter = GetComponentInChildren<BulletShooter>();
+        _bulletShooter.Initialize(this, _door);
+        _positionChanged.Invoke(transform.position);
+        Mass = _startMass;
     }
 
 }
