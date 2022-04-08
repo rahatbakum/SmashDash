@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class ObstacleView : MonoBehaviour
 {
+
+    [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private Material _explodingMaterial;
 
     public void ShowStartExploding()
     {
-        GetComponent<MeshRenderer>().material = _explodingMaterial;
+        _meshRenderer.material = _explodingMaterial;
     }
 }

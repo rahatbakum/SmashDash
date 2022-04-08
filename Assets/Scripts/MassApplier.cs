@@ -7,7 +7,7 @@ public class MassApplier : MonoBehaviour
     public const float RadiusOfUnitSphere = 0.5f;
     public const float PowOfMass = 1.5f;
 
-    public static float MassToRadius(float mass) => Mathf.Pow(mass / MassOfUnitSphere, 1f / PowOfMass) * RadiusOfUnitSphere;
+    public static float MassToRadius(float mass) => Mathf.Pow(mass / MassOfUnitSphere, MathHelper.InverseValue(PowOfMass)) * RadiusOfUnitSphere;
 
     public static float RadiusToMass(float radius) => MassOfUnitSphere * Mathf.Pow(radius, PowOfMass) / Mathf.Pow(RadiusOfUnitSphere, PowOfMass);
 

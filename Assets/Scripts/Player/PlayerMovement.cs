@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     public void StartMovingToDoor()
     {
         
-        _player.CurrentPlayerState = PlayerState.Jump;
+        _player.CurrentPlayerState = PlayerState.Move;
         StartCoroutine(MoveToDoor(Obstacle.ExplodingTime * WaitAfterObstacleExplodingCoef));
     }
 

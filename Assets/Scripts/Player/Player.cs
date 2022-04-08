@@ -120,7 +120,7 @@ public class Player : MonoBehaviour, IExplodingObject, IMassObject
 public enum PlayerState
 {
     Stay,
-    Jump
+    Move
 }
 
 
